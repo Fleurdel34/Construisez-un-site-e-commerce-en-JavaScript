@@ -1,12 +1,11 @@
 const response = await fetch("http://localhost:3000/api/products");
-const produit = await response.json();
-
-/*.catch((err) => {console.log(err);});*/
+const produit =  await response.json();
 
 /*appel de la requête fetch pour la création des fiches produits*/
 
 function afficherProduits(produit){
-for (let i = 0; i < produit.length; i++){
+
+for (let i = 0; i<produit.length; i++){
 
     const produits = produit[i];
     const sectionElement = document.querySelector("#items");
@@ -29,7 +28,7 @@ for (let i = 0; i < produit.length; i++){
     
 }
 
-afficherProduits(produit);
+afficherProduits();
 
 
 const str = "";
@@ -41,7 +40,6 @@ const search_url= new URLSearchParams(url.search);
   if (search_url.has('id')){
     
     const id = search_params.get('id');
-    return id;
     console.log(p);
 
   };

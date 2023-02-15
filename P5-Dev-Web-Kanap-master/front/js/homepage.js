@@ -1,7 +1,7 @@
-const response = await fetch('http://localhost:3000/api/products').catch((err) => {console.log(err);});
+const response = await fetch("http://localhost:3000/api/products");
 const produit = await response.json();
 
-
+/*.catch((err) => {console.log(err);});*/
 
 /*appel de la requête fetch pour la création des fiches produits*/
 
@@ -31,4 +31,20 @@ for (let i = 0; i < produit.length; i++){
 
 afficherProduits(produit);
 
-l
+
+const str = "";
+const url = new URL (str);
+const search_url= new URLSearchParams(url.search);
+
+// Itère sur les paramètres de recherche.
+
+  if (search_url.has('id')){
+    
+    const id = search_params.get('id');
+    return id;
+    console.log(p);
+
+  };
+
+
+

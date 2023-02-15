@@ -8,30 +8,36 @@ function afficherProduits(produit){
 for (let i = 0; i<produit.length; i++){
 
     const produits = produit[i];
-    const sectionElement = document.querySelector("#items");
+
+    const sectionElement = document.querySelector(".items");
+
     const aElement = document.createElement("a");
     aElement.setAttribute("href", "../producthtml");
-    sectionElement.appendChild(aElement);
     const articleElement = document.createElement("article");
-    aElement.appendChild(articleElement);
+    articleElement.dataset.produit[i].id;
     const imgElement = document.createElement("img"); 
     imgElement.src = produits.imageUrl;
     imgElement.setAttribute("alt", "produits.altTxt");
-    articleElement.appendChild(imgElement);
     const nameElement = document.createElement("h3");
     nameElement.innerText = produits.name;
-    articleElement.appendChild(nameElement);
     const descriptionElement = document.createElement("p");
     descriptionElement.innerText = produits.description ?? "Aucune description";
+    
+
+
+    sectionElement.appendChild(aElement);
+    aElement.appendChild(articleElement);
+    articleElement.appendChild(imgElement);
+    articleElement.appendChild(nameElement);
     articleElement.appendChild(descriptionElement); 
     };
     
 }
 
-afficherProduits();
+afficherProduits(produit);
 
 
-const str = "";
+/*const str = "";
 const url = new URL (str);
 const search_url= new URLSearchParams(url.search);
 
@@ -42,7 +48,7 @@ const search_url= new URLSearchParams(url.search);
     const id = search_params.get('id');
     console.log(p);
 
-  };
+  };*/
 
 
 

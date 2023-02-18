@@ -18,46 +18,33 @@ const responseApi = await productApi.json();
 
 function produitId(responseApi){   
 
-const mainElement = document.querySelector(".limitedWidthBlockContainer")
-const divPrincipaleElement = document.createElement("div");
-divPrincipaleElement.setAttribute("class", "limitedWidthBlock");
-sectionElement= document.createElement("section");
-sectionElement.setAttribute("class", "items");
-const articleElement = document.createElement("article");
-
-
-const div1Element = document.createElement("div");
-div1Element.setAttribute("class", "item__img");
+const div1Element = document.querySelector(".item__img");
 const imgElement = document.createElement("img"); 
 imgElement.src = responseApi.imageUrl;
 imgElement.setAttribute("alt", "produits.altTxt");
-        
-const div2Element = document.createElement("div")
-div2Element.setAttribute("class", "item__content__titlePrice");
+div1Element.appendChild(imgElement);  
+
+const h1Element = document.querySelector("#title");
 const nameElement = document.createElement("h1")
-nameElement.setAttribute("id", "title");
 nameElement.innerText = responseApi.name;
-const pElement = document.createElement("p")
+h1Element.appendChild(nameElement);
+
+const spanElement = document.querySelector("#price")
 const prixElement = document.createElement("span")
-prixElement.setAttribute("id", "description");
 prixElement.innerText = responseApi.price;
+spanElement.appendChild(prixElement);
 
-const div3Element = document.createElement("div");
-div3Element.setAttribute("class", "item__content__description");
+const pElement = document.querySelector("#description");
 const descriptionElement = document.createElement("p");
-descriptionElement.innerText = responseApi.description; /*?? "Aucune description"*/
+descriptionElement.innerText = responseApi.description ?? "Aucune description";
+pElement.appendChild(descriptionElement);
 
-mainElement.appendChild(divPrincipaleElement);
-divPrincipaleElement.appendChild(sectionElement);
-sectionElement.appendChild(articleElement);
-articleElement.appendChild(div1Element);
-articleElement.appendChild(div2Element);
-articleElement.appendChild(div3Element);
-div1Element.appendChild(imgElement);
-div2Element.appendChild(nameElement);
-div2Element.appendChild(pElement);
-pElement.appendChild(prixElement);
-div3Element.appendChild(descriptionElement);
+for(let i =0; i<responseApi.colors.length; i++){
+    const selectElement = document.querySelector("#colors");
+    const optionElement = document.createElement("option");
+    optionElement.innerText = responseApi.colors[i];
+    selectElement.appendChild(optionElement);
+}
 
 }
 

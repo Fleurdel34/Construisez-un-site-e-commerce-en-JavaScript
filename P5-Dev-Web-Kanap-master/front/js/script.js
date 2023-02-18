@@ -1,5 +1,3 @@
-import {recupIdFicheProduit, constructionAPiProduit} from "./product.js";
-
 
 const response = await fetch("http://localhost:3000/api/products");
 const produit =  await response.json();
@@ -17,7 +15,7 @@ for (let i = 0; i<produit.length; i++){
     const aElement = document.createElement("a");
     aElement.setAttribute("id", "produits._id");
     const idElement = aElement.id;
-    aElement.setAttribute("href", "../producthtml?id=" + produits._id);
+    aElement.setAttribute("href", "product.html?id=" + produits._id); 
     const articleElement = document.createElement("article");
     const imgElement = document.createElement("img"); 
     imgElement.src = produits.imageUrl;
@@ -40,8 +38,18 @@ for (let i = 0; i<produit.length; i++){
 }
 
 afficherProduits(produit);
-recupIdFicheProduit();
-constructionAPiProduit();
+
+
+    
+    
+
+    
+
+
+
+
+
+
 
 
 

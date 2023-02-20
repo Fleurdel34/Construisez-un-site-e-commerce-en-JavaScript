@@ -49,3 +49,52 @@ for(let i =0; i<responseApi.colors.length; i++){
 }
 
 produitId(responseApi);
+
+/* ajout des éléments au panier lors d'un clique sur le bouton ajouter au panier*/
+const boutonAjouterAuPanier = document.querySelector("#addToCart");
+
+
+
+boutonAjouterAuPanier.addEventListener("click", function(event){
+    event.preventDefault;
+
+    
+    let idPanier= id;
+    let colors= document.getElementById('colors').value;
+    let quantite= document.getElementById('quantity').value;
+    
+
+    const kanapPanier=[idPanier, colors, quantite];
+   
+    
+    const sauvegardePanier= window.localStorage.getItem(kanapPanier);
+
+    if (sauvegardePanier===null){
+
+        window.localStorage.setItem("kanape", kanapPanier);
+
+    } 
+    else{
+
+
+    window.localStorage.setItem("kanape", kanapPanier);
+
+     window.localStorage.getItem(kanapPanier);
+
+        for(let i of kanapPanier){
+
+            if(kanapPanier[i]===idPanier && kanapPanier[i]===colors){
+                
+                kanapPanier[quantite]=document.getElementById('quantity').value; 
+                window.localStorage.setItem(kanapPanier[quantite]);
+            }
+            else{  
+                window.localStorage.setItem("kanape", kanapPanier);
+        
+            }
+        }
+
+    }
+   
+            
+});  

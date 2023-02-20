@@ -53,48 +53,36 @@ produitId(responseApi);
 /* ajout des éléments au panier lors d'un clique sur le bouton ajouter au panier*/
 const boutonAjouterAuPanier = document.querySelector("#addToCart");
 
-
-
-boutonAjouterAuPanier.addEventListener("click", function(event){
-    event.preventDefault;
-
+boutonAjouterAuPanier.addEventListener("click", function(event){ 
     
     let idPanier= id;
     let colors= document.getElementById('colors').value;
     let quantite= document.getElementById('quantity').value;
-    
 
     const kanapPanier=[idPanier, colors, quantite];
-   
+    let sauvegardePanier = window.localStorage.getItem(kanapPanier);
     
-    const sauvegardePanier= window.localStorage.getItem(kanapPanier);
-
     if (sauvegardePanier===null){
 
-        window.localStorage.setItem("kanape", kanapPanier);
+    window.localStorage.setItem("1", JSON.stringify(kanapPanier));
 
-    } 
-    else{
+    }
+   else{
+        for(let i of sauvegardePanier){
 
-
-    window.localStorage.setItem("kanape", kanapPanier);
-
-     window.localStorage.getItem(kanapPanier);
-
-        for(let i of kanapPanier){
-
-            if(kanapPanier[i]===idPanier && kanapPanier[i]===colors){
-                
+            if(sauvegardePanier[i] === kanapPanier[idPanier] && sauvegardePanier[i]=== kanapPanier[colors]){
+                    
                 kanapPanier[quantite]=document.getElementById('quantity').value; 
                 window.localStorage.setItem(kanapPanier[quantite]);
             }
             else{  
-                window.localStorage.setItem("kanape", kanapPanier);
-        
+                for (let i=0; i<=sauvegardePanier.length; i++){
+                
+                    let key=i+1;
+                window.localStorage.setItem(key, JSON.stringify(kanapPanier));
+                }
             }
         }
-
     }
-   
             
 });  

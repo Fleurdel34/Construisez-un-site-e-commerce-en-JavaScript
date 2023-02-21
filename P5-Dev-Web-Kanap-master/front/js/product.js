@@ -53,36 +53,51 @@ produitId(responseApi);
 /* ajout des éléments au panier lors d'un clique sur le bouton ajouter au panier*/
 const boutonAjouterAuPanier = document.querySelector("#addToCart");
 
-boutonAjouterAuPanier.addEventListener("click", function(event){ 
+boutonAjouterAuPanier.addEventListener("click", function(e){ 
     
-    let idPanier= id;
-    let colors= document.getElementById('colors').value;
-    let quantite= document.getElementById('quantity').value;
+    let kanapPanier=[];
 
-    const kanapPanier=[idPanier, colors, quantite];
-    let sauvegardePanier = window.localStorage.getItem(kanapPanier);
+    let objKanape = {
+        'id': id,
+        'quantite':document.getElementById('quantity').value,
+        'colors':document.getElementById('colors').value
+    }
+
     
-    if (sauvegardePanier===null){
+    let panier = window.localStorage.getItem('kanapPanier');
+    
 
-    window.localStorage.setItem("1", JSON.stringify(kanapPanier));
+    if (panier === null){
+
+        kanapPanier.push(objKanape);
+        window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
 
     }
-   else{
-        for(let i of sauvegardePanier){
+   else{            
+        kanapPanier= JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-            if(sauvegardePanier[i] === kanapPanier[idPanier] && sauvegardePanier[i]=== kanapPanier[colors]){
-                    
-                kanapPanier[quantite]=document.getElementById('quantity').value; 
-                window.localStorage.setItem(kanapPanier[quantite]);
-            }
-            else{  
-                for (let i=0; i<=sauvegardePanier.length; i++){
-                
-                    let key=i+1;
-                window.localStorage.setItem(key, JSON.stringify(kanapPanier));
-                }
-            }
-        }
-    }
+        const resultId = kanapPanier.find((kanap) => { 
+            return kanap.id === id; 
+        });
+
+        const resultColors = kanapPanier.find((kanap) => { 
+            return kanap.colors === objKanape.colors;
+        });
             
+            
+        if(resultId === objKanape.id  && resultColors === objKanape.colors)
+        {
+            
+            
+
+        };
+            
+        
+        }else{
+
+        kanapPanier.push(objKanape);
+        window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
+
+        }
+    }  
 });  

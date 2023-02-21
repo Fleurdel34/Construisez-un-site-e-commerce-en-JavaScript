@@ -61,7 +61,7 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
         'id': id,
         'quantite':document.getElementById('quantity').value,
         'colors':document.getElementById('colors').value
-    }
+    };
 
     
     let panier = window.localStorage.getItem('kanapPanier');
@@ -77,27 +77,36 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
         kanapPanier= JSON.parse(window.localStorage.getItem('kanapPanier'));
 
         const resultId = kanapPanier.find((kanap) => { 
-            return kanap.id === id; 
+            return kanap.id === objKanape.id;
         });
 
         const resultColors = kanapPanier.find((kanap) => { 
             return kanap.colors === objKanape.colors;
         });
             
-            
-        if(resultId === objKanape.id  && resultColors === objKanape.colors)
+        if(resultId === objKanape.id && kanap.colors === objKanape.colors)
         {
+           const modifQuantitePanier = kanapPanier.map((kanap) =>{
             
-            
+            let resulPanier={};
 
-        };
-            
-        
+            resulPanier[kanap.id] = kanap.valeur;
+            resulPanier[kanap.colors] = kanap.valeur;
+            resulPanier[kanap.quantite]= kanap.valeur;
+
+            objKanape.quantite = document.getElementById('quantity').value;
+            resulPanier.quantite =  objKanape.quantite;
+
+            kanapPanier.push(resulPanier);
+            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
+            });
+
         }else{
 
         kanapPanier.push(objKanape);
         window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
 
         }
-    }  
+        
+    }
 });  

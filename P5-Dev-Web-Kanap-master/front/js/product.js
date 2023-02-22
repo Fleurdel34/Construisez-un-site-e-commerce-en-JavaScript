@@ -86,6 +86,7 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
         });
         if(resultId===objKanape.id && resultColors===objKanape.colors){
             kanapPanier.quantite = objKanape.quantite;
+            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier.quantite));
         }else{
 
             kanapPanier.push(objKanape);

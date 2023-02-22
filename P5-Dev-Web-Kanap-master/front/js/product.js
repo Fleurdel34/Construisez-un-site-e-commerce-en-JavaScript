@@ -88,15 +88,14 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
         {
            const modifQuantitePanier = kanapPanier.map((kanap) =>{
             
-            let resulPanier={};
-
-            resulPanier.id = kanap.id;
-            resulPanier.colors = kanap.colors;
-            resulPanier.quantite= kanap.quantite;
+            let resulPanier={
+                    'id': kanap.id,
+                    'colors': kanap.colors,
+                    'quantite': kanap.quantite
+            }
 
            });
 
-            
             resulPanier.quantite = objKanape.quantite;
 
             const returnedObjPanier = Object.assign(objKanape, resulPanier);

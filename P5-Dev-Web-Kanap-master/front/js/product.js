@@ -77,21 +77,31 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
 
         kanapPanier= JSON.parse(window.localStorage.getItem('kanapPanier'));
         
-        const resultId = kanapPanier.find((kanap) => { 
+       /* const resultId = kanapPanier.find((kanap) => { 
             return kanap.id === objKanape.id;
         });
 
         const resultColors = kanapPanier.find((kanap) => { 
             return kanap.colors === objKanape.colors;
-        });
-        if(resultId===objKanape.id && resultColors===objKanape.colors){
-            kanapPanier.quantite = objKanape.quantite;
-            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier.quantite));
+        });*/
+
+        const newKanapPanier = kanapPanier.map((item)=> {
+
+        if (item.id === objKanape.id && item.colors === objKanape.colors){
+            return{...item, quantite: objKanape.quantite};
+           
+            
         }else{
 
             kanapPanier.push(objKanape);
             window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
         }
-      
+
+        return item;
+        });
+
+        
     }
+      
+    
 });  

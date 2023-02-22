@@ -88,13 +88,12 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
         {
            const modifQuantitePanier = kanapPanier.map((kanap) =>{
             
-            let resulPanier={
+                let resulPanier={
                     'id': kanap.id,
                     'colors': kanap.colors,
                     'quantite': kanap.quantite
-            }
-
-           });
+                }
+            });
 
             resulPanier.quantite = objKanape.quantite;
 

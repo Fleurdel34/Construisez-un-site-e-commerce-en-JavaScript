@@ -84,7 +84,7 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
             return kanap.colors === objKanape.colors;
         });
             
-        if(resultId === objKanape.id && kanap.colors === objKanape.colors)
+        if(resultId === objKanape.id && resultColors === objKanape.colors)
         {
            const modifQuantitePanier = kanapPanier.map((kanap) =>{
             
@@ -93,20 +93,21 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
             resulPanier[kanap.id] = kanap.valeur;
             resulPanier[kanap.colors] = kanap.valeur;
             resulPanier[kanap.quantite]= kanap.valeur;
+           });
 
-            objKanape.quantite = document.getElementById('quantity').value;
+            
             resulPanier.quantite =  objKanape.quantite;
-
+            console.log(resulPanier);
             kanapPanier.push(resulPanier);
             window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
-            });
+            
 
-        }else{
+        }/*else{
 
         kanapPanier.push(objKanape);
         window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
 
-        }
+        }*/
         
     }
 });  

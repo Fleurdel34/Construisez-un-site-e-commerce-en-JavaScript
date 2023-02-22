@@ -73,9 +73,10 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
         window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
 
     }
-   else{  
+   else {  
 
         kanapPanier= JSON.parse(window.localStorage.getItem('kanapPanier'));
+        
         const resultId = kanapPanier.find((kanap) => { 
             return kanap.id === objKanape.id;
         });
@@ -83,15 +84,13 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
         const resultColors = kanapPanier.find((kanap) => { 
             return kanap.colors === objKanape.colors;
         });
-            for(let i = 0; i<=kanapPanier.length; i++){
-            if(resultId === objKanape.id && resultColors === objKanape.colors){
-                kanap.quantite = objKanape.quantite;
-                window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
-            }else{
+        if(resultId===objKanape.id && resultColors===objKanape.colors){
+            kanapPanier.quantite = objKanape.quantite;
+        }else{
 
-                kanapPanier.push(objKanape);
-                window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
-            }
+            kanapPanier.push(objKanape);
+            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
         }
+      
     }
 });  

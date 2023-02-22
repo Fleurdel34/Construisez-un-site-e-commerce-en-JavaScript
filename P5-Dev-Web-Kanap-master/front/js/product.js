@@ -83,17 +83,14 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
         const resultColors = kanapPanier.find((kanap) => { 
             return kanap.colors === objKanape.colors;
         });
-
-        for(let kanap of kanapPanier){
-
+            for(let i = 0; i<=kanapPanier.length; i++){
             if(resultId === objKanape.id && resultColors === objKanape.colors){
                 kanap.quantite = objKanape.quantite;
                 window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
             }else{
 
-            kanapPanier.push(objKanape);
-            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
-    
+                kanapPanier.push(objKanape);
+                window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
             }
         }
     }

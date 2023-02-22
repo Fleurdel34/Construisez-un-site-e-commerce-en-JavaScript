@@ -90,9 +90,9 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
             
             let resulPanier={};
 
-            resulPanier.id = kanap.id.value;
-            resulPanier.colors = kanap.colors.value;
-            resulPanier.quantite= kanap.quantite.value;
+            resulPanier.id = kanap.id;
+            resulPanier.colors = kanap.colors;
+            resulPanier.quantite= kanap.quantite;
 
            });
 

@@ -96,9 +96,11 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
            });
 
             
-            resulPanier.quantite =  objKanape.quantite;
-            console.log(resulPanier);
-            kanapPanier.push(resulPanier);
+            resulPanier.quantite = objKanape.quantite;
+
+            const returnedObjPanier = Object.assign(objKanape, resulPanier);
+            
+            kanapPanier.push(objKanape);
             window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
             
 

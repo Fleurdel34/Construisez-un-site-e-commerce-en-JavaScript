@@ -90,9 +90,10 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
             
             let resulPanier={};
 
-            resulPanier[kanap.id] = kanap.valeur;
-            resulPanier[kanap.colors] = kanap.valeur;
-            resulPanier[kanap.quantite]= kanap.valeur;
+            resulPanier.id = kanap.id.value;
+            resulPanier.colors = kanap.colors.value;
+            resulPanier.quantite= kanap.quantite.value;
+
            });
 
             
@@ -104,12 +105,12 @@ boutonAjouterAuPanier.addEventListener("click", function(e){
             window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
             
 
-        }/*else{
+        }else{
 
         kanapPanier.push(objKanape);
         window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
 
-        }*/
+        }
         
     }
 });  

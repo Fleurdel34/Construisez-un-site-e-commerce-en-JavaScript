@@ -54,52 +54,48 @@ produitId(responseApi);
 const boutonAjouterAuPanier = document.querySelector("#addToCart");
 
 boutonAjouterAuPanier.addEventListener("click", function(event){ 
-    event.preventDefault();
-    let kanapPanier=[];
+   
+    
+        let kanapPanier=[];
 
-    let objKanape = {
+        let objKanape= {
         'id': id,
-        'quantite':document.getElementById('quantity').value,
-        'colors':document.getElementById('colors').value
-    };
+        'quantite': document.getElementById('quantity').value,
+        'colors': document.getElementById('colors').value
+        }
 
     
-    let panier = window.localStorage.getItem('kanapPanier');
-    
+        let panier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    if (panier === null){
+        if(panier===null){
+            kanapPanier.push(objKanape);
+            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
 
-        kanapPanier.push(objKanape);
-        window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
+        }else{
+            
+            kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
+            for(let obj = 0; obj<=kanapPanier.length; obj++){
+                if(kanapPanier[obj].id === objKanape.id && kanapPanier[obj].colors === objKanape.colors)
+                {
+                    
+                    kanapPanier[obj].quantite = objKanape.quantite;
+                    window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
 
+                }else{
+                    kanapPanier.push(objKanape);
+                    window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier)); 
+
+                }
+
+            }
+        } 
+});     
+         
+     /*let newKanapPanier = kanapPanier.map((item) => {
+        
+    if(item.id === objKanape.id && item.colors === objKanape.colors){
+                        
+        return{...item, quantite: objKanape.quantite};  
     }
+    )};*/
 
-   else{  
-
-        kanapPanier= JSON.parse(window.localStorage.getItem('kanapPanier'));
-
-        let newKanapPanier = kanapPanier.map((item)=> {
-
-        if (item.id === objKanape.id && item.colors === objKanape.colors){
-            
-            return{...item, quantite: objKanape.quantite};
-            
-
-        }
-        else{
-
-            objKanape = {
-                'id': id,
-                'quantite':document.getElementById('quantity').value,
-                'colors':document.getElementById('colors').value
-            };
-            return{...item, objKanape};
-
-        }
-            return item;
-
-        });
-        window.localStorage.setItem('kanapPanier', JSON.stringify(newKanapPanier));
-   }
- 
-});  

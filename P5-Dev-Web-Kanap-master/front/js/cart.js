@@ -1,14 +1,25 @@
-let accesPanier= window.localStorage.getItem('kanapPanier');
+const accesPanier= window.localStorage.getItem('kanapPanier');
 
-/*let id;
+let id;
 let quantite;
-let colors;*/
+let colors;
+for (let i = 0; i <=accesPanier.length; i++) {
+ 
+    const panierObj = accesPanier[i];
+  
+  	  for (let i = 0; i < panierObj.length; i++) {
 
+            let id  = panierObj[i].id;
+            let quantite  = panierObj[i].utilisateur;
+            let colors  = panierObj[i].avis;
+      }
+}   
+    
 
+const requeteApi = await fetch("http://localhost:3000/api/products/"+id); 
+const response = await requeteApi.json(); 
 
-    const productApi = await fetch("http://localhost:3000/api/products/"+id); 
-    const responseApi = await productApi.json(); 
-
+function genererPanier(response){
 
     const sectionElement = document.querySelector("#cart__items");
 
@@ -18,7 +29,7 @@ let colors;*/
     const div1Element = document.createElement("div");
     div1Element.setAttribute("class", "cart__item__img");
     const imgElement = document.createElement("img"); 
-    imgElement.src = responseApi.imageUrl;
+    imgElement.src = response.imageUrl;
     imgElement.setAttribute("alt", "produits.altTxt");
 
     const div2Element = document.createElement("div");
@@ -26,11 +37,11 @@ let colors;*/
     const sousDiv2Element = document.createElement("div");
     sousDiv2Element.setAttribute("class", "cart__item__content__description");
     const nameElement = document.createElement("h2");
-    nameElement.innerText = responseApi.name;
+    nameElement.innerText = response.name;
     const colorElement = document.createElement("p");
     colorElement.innerText = colorsObj;
     const prixElement = document.createElement("p");
-    prixElement.innerText = responseApi.price;
+    prixElement.innerText = response.price;
 
 
     const div3Element = document.createElement("div");
@@ -75,4 +86,5 @@ let colors;*/
 
     div4Element.appendChild(deleteElement);
 
-
+}
+genererPanier(response);

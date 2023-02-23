@@ -53,8 +53,8 @@ produitId(responseApi);
 /* ajout des éléments au panier lors d'un clique sur le bouton ajouter au panier*/
 const boutonAjouterAuPanier = document.querySelector("#addToCart");
 
-boutonAjouterAuPanier.addEventListener("click", function(e){ 
-    
+boutonAjouterAuPanier.addEventListener("click", function(event){ 
+    event.preventDefault();
     let kanapPanier=[];
 
     let objKanape = {

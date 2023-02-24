@@ -54,7 +54,7 @@ produitId(responseApi);
 const boutonAjouterAuPanier = document.querySelector("#addToCart");
 
 boutonAjouterAuPanier.addEventListener("click", function(event){ 
-   
+
     
         let kanapPanier=[];
 
@@ -85,7 +85,7 @@ boutonAjouterAuPanier.addEventListener("click", function(event){
                     kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
                     kanapPanier.push(objKanape);
                     window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier)); 
-                    
+                    break;
                 }
                 break;
 

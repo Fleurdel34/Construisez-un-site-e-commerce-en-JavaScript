@@ -77,25 +77,20 @@ boutonAjouterAuPanier.addEventListener("click", function(event){
             for(let obj = 0; obj<=kanapPanier.length; obj++){
                 if(kanapPanier[obj].id === objKanape.id && kanapPanier[obj].colors === objKanape.colors)
                 {
-                    
                     kanapPanier[obj].quantite = objKanape.quantite;
                     window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
+                    
 
                 }else{
+                    kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
                     kanapPanier.push(objKanape);
                     window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier)); 
-
+                    
                 }
+                break;
 
             }
         } 
 });     
-         
-     /*let newKanapPanier = kanapPanier.map((item) => {
-        
-    if(item.id === objKanape.id && item.colors === objKanape.colors){
-                        
-        return{...item, quantite: objKanape.quantite};  
-    }
-    )};*/
+
 

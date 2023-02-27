@@ -74,7 +74,7 @@ boutonAjouterAuPanier.addEventListener("click", function(event){
         }else{
             
             kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
-            for(let obj = 0; obj<=kanapPanier.length; obj++){
+            for(let obj = 0; obj<=kanapPanier.length-1; obj++){
                 if(kanapPanier[obj].id === objKanape.id && kanapPanier[obj].colors === objKanape.colors)
                 {
                     kanapPanier[obj].quantite = objKanape.quantite;

@@ -2,17 +2,13 @@
 
 let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-let id;
-let quantite;
-let colors;
-
 
 for (let i =0; i<= kanapPanier.length-1; i++) {   
 
    
-    id = kanapPanier[i].id;
-    quantite  = kanapPanier[i].quantite;
-    colors  = kanapPanier[i].colors;
+    let id = kanapPanier[i].id;
+    let quantite  = kanapPanier[i].quantite;
+    let colors  = kanapPanier[i].colors;
 	       
 const requeteApi = await fetch("http://localhost:3000/api/products/"+id); 
 const response = await requeteApi.json(); 
@@ -60,10 +56,10 @@ itemElement.setAttribute("max","100");
 
         
 const div4Element = document.createElement("div");
-div4Element.setAttribute("class","deleteItem");
+div4Element.setAttribute("class","cart__item__content__settings__delete");
 const deleteElement = document.createElement("p");
 deleteElement.innerText = "Supprimer";
-
+div4Element.setAttribute("class","deleteItem");
 
 
 
@@ -124,16 +120,18 @@ input.addEventListener('change', function(event){
 
 modifListenerQuantite();
 
-/* supression d'un element du panier/du DOM/ du localStorage*/
+/* supression d'un document du panier/du DOM/ du localStorage*/
 
 
-let itemSupprimer = document.querySelector(".deleteItem");
+let itemSupprimer = document.querySelectorAll(".cart__item__content__settings__delete");
 
-itemSupprimer.onclick= function(){
+for(let i =0; i<=itemSupprimer.length-1; i++){
+
+itemSupprimer[i].onclick= function(){
    
 
-    let supressionElement = document.querySelector(".deleteItem");
-    let parentElementDelete = supressionElement.closest("article");
+    
+    let parentElementDelete = itemSupprimer[i].closest("article");
     let productId = parentElementDelete.dataset.id;
     let productColor = parentElementDelete.dataset.color;
 
@@ -165,50 +163,70 @@ itemSupprimer.onclick= function(){
 
         
 };
+}
 
 /* fonction pour validation des données du formulaire et envoi des données et tableau des produits*/
 
-let contText= new RegExp ([a-zA-Z]);
+let contText= /[a-zA-Z]/g;
 
-let contAlphaNumerique= new RegExp([a-zA-Z0-9]);
+let contAlphaNumerique= /[a-zA-Z0-9]/g;
 
-let contEmail = new RegExp();
+let contEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;
 
-let firstNameError = element.getElementById("firstNameErrorMsg");
-let lastNameError = element.getElementById("lastNameErrorMsg");
-let addressError = element.getElementById("addressErrorMsg");
-let cityError = element.getElementById("cityErrorMsg");
-
-
-let firstName = element.getElementById("firstName").value;
-let lastName = element.getElementById("lastName").value;
-let address = element.getElementById("address").value;
-let city = element.getElementById("city").value;
+let firstNameError = document.querySelector("#firstNameErrorMsg");
+let lastNameError = document.querySelector("#lastNameErrorMsg");
+let addressError = document.querySelector("#addressErrorMsg");
+let cityError = document.querySelector("#cityErrorMsg");
+let emailError = document.querySelector("#emailErrorMsg");
 
 
-if (firstName.match(contText) === false){
-    firstNameError.innerText = "La saisie est invalide. Veuillez saisir uniquement des lettres minuscules ou majuscule.";
+let firstName = document.getElementById("firstName").value;
+let lastName = document.getElementById("lastName").value;
+let address = document.getElementById("address").value;
+let city = document.getElementById("city").value;
+let email = document.getElementById("email").value;
+
+if (firstName !== "" && contText.test(firstName) === false){
+    firstNameError.innerText = "Veuillez saisir uniquement des lettres.";
+   
 }else{
-    firstNameError.innerText = "";
+
+    firstNameError.textContent="";
+    
 }
 
-if (lastName.match(contText) === false){
-    lastNameError.innerText = "La saisie est invalide. Veuillez saisir uniquement des lettres minuscules ou majuscule.";
+if (lastName !== "" &&contText.test(lastName) === false){
+    lastNameError.innerText = "Veuillez saisir uniquement des lettres.";
+    
 }else{
-    lastNameError.innerText = "";
+    lastNameError.textContent="";
+   
 }
 
-if (address.match(contAlphaNumerique) === false){
-    address.innerText = "La saisie est invalide. Veuillez saisir uniquement des chiffres ou des lettres .";
+if (address !== "" &&contAlphaNumerique.test(address) === false){
+    addressError.innerText = "Veuillez saisir uniquement des lettres.";
+    
 }else{
-    address.innerText = " ";
+    addressError.textContent="";
+    
 }
 
-if (city.match(contText) === false){
-    cityError.innerText = "La saisie est invalide. Veuillez saisir uniquement des lettres minuscules ou majuscule.";
+if (city !== "" && contText.test(city) === false){
+    cityError.innerText = "Veuillez saisir uniquement des lettres.";
+    
 }else{
-    cityError.innerText = " ";
+    cityError.textContent="";
+    
 }
+
+if (email!== "" && contEmail.test(email) === false){
+    emailError.innerText = "Veuillez saisir une adresse email valide.";
+   
+}else{
+    emailError.textContent="";
+}
+
+
 
 function ajoutListenerCommande(){
 
@@ -220,29 +238,13 @@ function ajoutListenerCommande(){
 
         let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-        let id;
-        let quantite;
-        let colors;
-
-
-        for (let i =0; i<= kanapPanier.length-1; i++) {   
-
-   
-        id = kanapPanier[i].id;
-        quantite  = kanapPanier[i].quantite;
-        colors  = kanapPanier[i].colors;
-
-        }
-
         const contact = {
             'firstName':event.target.querySelector("[name=firstName]").value,
             'lastName':event.target.querySelector("[name=lastName]").value,
             'address':event.target.querySelector("[name=address]").value,
             'city':event.target.querySelector("[name=city]").value,
             'email':event.target.querySelector("[name=email]").value,
-            'id': id,
-            'quantite': quantite,
-            'color': colors
+            'produitsPanier': kanapPanier
         }
 
         const chargeUtile = JSON.stringify(contact);

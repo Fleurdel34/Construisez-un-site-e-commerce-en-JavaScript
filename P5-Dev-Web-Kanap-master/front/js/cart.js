@@ -1,16 +1,19 @@
 /*creation d'un tableau contenant les articles du panier*/
 
-let accesPanier= window.localStorage.getItem('kanapPanier');
+let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-accesPanier =JSON.parse(accesPanier);
+let id;
+let quantite;
+let colors;
 
 
-for (let i = 0; i <=accesPanier.length; i++) {   
-    
-    let id = accesPanier[i].id;
-    let quantite  = accesPanier[i].quantite;
-    let colors  = accesPanier[i].colors;
-  	       
+for (let i =0; i<= kanapPanier.length-1; i++) {   
+
+   
+    id = kanapPanier[i].id;
+    quantite  = kanapPanier[i].quantite;
+    colors  = kanapPanier[i].colors;
+	       
 const requeteApi = await fetch("http://localhost:3000/api/products/"+id); 
 const response = await requeteApi.json(); 
 
@@ -20,6 +23,8 @@ const sectionElement = document.querySelector("#cart__items");
 
 const articleElement = document.createElement("article");
 articleElement.setAttribute("class", "cart__item");
+articleElement.setAttribute("data-id", id);
+articleElement.setAttribute("data-color", colors);
 
 const div1Element = document.createElement("div");
 div1Element.setAttribute("class", "cart__item__img");
@@ -41,10 +46,10 @@ prixElement.innerText = response.price + " €";
 
 const div3Element = document.createElement("div");
 div3Element.setAttribute("class", "cart__item__content__settings")
-const sousDiv3Element = document.createElement("dv");
+const sousDiv3Element = document.createElement("div");
 sousDiv3Element.setAttribute("class", "cart__item__content__setting__Quantity");
 const quantiteElement = document.createElement("p");
-quantiteElement.innerText = quantite;
+quantiteElement.innerText = "Qté: " + quantite;
 const itemElement = document.createElement("input");
 itemElement.setAttribute("type","number");
 itemElement.setAttribute("class","itemQuantity");
@@ -58,9 +63,7 @@ const div4Element = document.createElement("div");
 div4Element.setAttribute("class","deleteItem");
 const deleteElement = document.createElement("p");
 deleteElement.innerText = "Supprimer";
-const supElement= document.createElement('button');
-supElement.setAttribute('id', 'btn__sup');
-supElement.innerHTML= 'Cliquer ici';
+
 
 
 
@@ -83,8 +86,6 @@ sousDiv3Element.appendChild(quantiteElement);
 sousDiv3Element.appendChild(itemElement);
 
 div4Element.appendChild(deleteElement);
-div4Element.appendChild(supElement);
-
 
 }
 
@@ -92,60 +93,171 @@ div4Element.appendChild(supElement);
 /* Modification de la quantité ou supression d'un produit du panier et maj du DOM/localStorage*/
 
 /* modification de la quantité d'un produit*/ 
-let input = document.querySelector(".itemQuantity");
-let result = document.querySelector("div.cart__item__content__settings__quantity p");
+
+
+function modifListenerQuantite(){
+const input = document.querySelector(".itemQuantity");
 
 input.addEventListener('change', function(event){
-    result.textContent = this.value;
+    event.preventDefault();
 
-    let inputModif = document.getByNameClass("itemQuantity").value;
-    let parentElementInputModif = inputModif.closet(":not (div)");
-    let productIdModif = parentElementInputModif.dataset.id;
-    let productColorModif = parentElementInputModif.dataset.color;
+    let resultModif = this.value;
+    let quantiteElement = document.querySelector("div.cart__item__content__setting__Quantity > p");
+    quantiteElement.innerText = "Qté: " + resultModif;
+    let parentElementQuantiteModif = quantiteElement.closest("article");
+    let productIdModif = parentElementQuantiteModif.dataset.id;
+    let productColorModif = parentElementQuantiteModif.dataset.color;
 
-    kanapPanier = parseInt(window.localStorage.getItem('kanapPanier'));
+    let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    const majPanier = kanapPanier.map((kanap)=>{
+    for(let obj = 0; obj<=kanapPanier.length-1; obj++){
+        if(kanapPanier[obj].id === productIdModif && kanapPanier[obj].colors === productColorModif)
+        {
+            kanapPanier[obj].quantite = resultModif;
+            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
+        }
 
-    if(kanap[i].id === productIdModif && kanap[i].colors === productColorModif){
+    }
 
-        return{...kanap, quantite: inputModif};
-    };
-    return kanap;
-    });
-})
+});
+}
+
+modifListenerQuantite();
 
 /* supression d'un element du panier/du DOM/ du localStorage*/
 
 
-let itemSupprimer = document.querySelector("#btn__sup");
+let itemSupprimer = document.querySelector(".deleteItem");
 
-
-kanapPanier = parseInt(window.localStorage.getItem('kanapPanier'));
-
-
-
-itemSupprimer.addEventListener('click', function(event){
+itemSupprimer.onclick= function(){
    
 
-    let supressionElement = document.getElementsById("#btn__sup");
-
-    let parentElementDelete = supressionElement.closet(":not (div)");
-
+    let supressionElement = document.querySelector(".deleteItem");
+    let parentElementDelete = supressionElement.closest("article");
     let productId = parentElementDelete.dataset.id;
     let productColor = parentElementDelete.dataset.color;
 
-    kanapPanier = parseInt(window.localStorage.getItem('kanapPanier'));
+    let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    for (let i =0; i<=kanapPanier.length; i++){
+   for (let item =0; item<=kanapPanier.length-1; item++){
 
-        if(kanapPanier[i].id === productId && kanapPanier[i].colors === productColor){
-
-            window.localStorage.removeItem(kanapPanier[i]);
+        if(kanapPanier[item].id === productId && kanapPanier[item].colors === productColor){
 
             parentElementDelete.remove();
+            
         };
     };
 
-});
+    kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
+
+    for(let obj = 0; obj<=kanapPanier.length-1;obj++){
+
+
+        if(kanapPanier[obj].id === productId && kanapPanier[obj].colors === productColor){
+
+           kanapPanier.splice(kanapPanier[obj],1);
+           window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
+
+        }
+
+    }
+            
+
+        
+};
+
+/* fonction pour validation des données du formulaire et envoi des données et tableau des produits*/
+
+let contText= new RegExp ([a-zA-Z]);
+
+let contAlphaNumerique= new RegExp([a-zA-Z0-9]);
+
+let contEmail = new RegExp();
+
+let firstNameError = element.getElementById("firstNameErrorMsg");
+let lastNameError = element.getElementById("lastNameErrorMsg");
+let addressError = element.getElementById("addressErrorMsg");
+let cityError = element.getElementById("cityErrorMsg");
+
+
+let firstName = element.getElementById("firstName").value;
+let lastName = element.getElementById("lastName").value;
+let address = element.getElementById("address").value;
+let city = element.getElementById("city").value;
+
+
+if (firstName.match(contText) === false){
+    firstNameError.innerText = "La saisie est invalide. Veuillez saisir uniquement des lettres minuscules ou majuscule.";
+}else{
+    firstNameError.innerText = "";
+}
+
+if (lastName.match(contText) === false){
+    lastNameError.innerText = "La saisie est invalide. Veuillez saisir uniquement des lettres minuscules ou majuscule.";
+}else{
+    lastNameError.innerText = "";
+}
+
+if (address.match(contAlphaNumerique) === false){
+    address.innerText = "La saisie est invalide. Veuillez saisir uniquement des chiffres ou des lettres .";
+}else{
+    address.innerText = " ";
+}
+
+if (city.match(contText) === false){
+    cityError.innerText = "La saisie est invalide. Veuillez saisir uniquement des lettres minuscules ou majuscule.";
+}else{
+    cityError.innerText = " ";
+}
+
+function ajoutListenerCommande(){
+
+    const formulaireCommande = document.querySelector(".cart_order_form");
+
+    formulaireCommande.addEventListener("submit", function(event){
+
+        event.preventDefault();
+
+        let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
+
+        let id;
+        let quantite;
+        let colors;
+
+
+        for (let i =0; i<= kanapPanier.length-1; i++) {   
+
+   
+        id = kanapPanier[i].id;
+        quantite  = kanapPanier[i].quantite;
+        colors  = kanapPanier[i].colors;
+
+        }
+
+        const contact = {
+            'firstName':event.target.querySelector("[name=firstName]").value,
+            'lastName':event.target.querySelector("[name=lastName]").value,
+            'address':event.target.querySelector("[name=address]").value,
+            'city':event.target.querySelector("[name=city]").value,
+            'email':event.target.querySelector("[name=email]").value,
+            'id': id,
+            'quantite': quantite,
+            'color': colors
+        }
+
+        const chargeUtile = JSON.stringify(contact);
+
+        fetch("http://localhost:3000/api/products/order"),{
+
+            method:"POST",
+            hearders:{"Content-Type":"application/json"},
+            body:chargeUtile
+        }
+
+
+    })
+
+
+}
+
 

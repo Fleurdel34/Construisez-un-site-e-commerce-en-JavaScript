@@ -59,7 +59,7 @@ const div4Element = document.createElement("div");
 div4Element.setAttribute("class","cart__item__content__settings__delete");
 const deleteElement = document.createElement("p");
 deleteElement.innerText = "Supprimer";
-div4Element.setAttribute("class","deleteItem");
+div4Element.setAttribute("class", "deleteItem");
 
 
 
@@ -122,22 +122,22 @@ modifListenerQuantite();
 
 /* supression d'un document du panier/du DOM/ du localStorage*/
 
+function supprimerListenerProduit(){
 
-let itemSupprimer = document.querySelectorAll(".cart__item__content__settings__delete");
+const produitSupprimer = document.querySelectorAll(".deleteItem");
 
-for(let i =0; i<=itemSupprimer.length-1; i++){
+for(let i = 0; i<=produitSupprimer.length-1; i++){
 
-itemSupprimer[i].onclick= function(){
-   
-
+produitSupprimer[i].addEventListener('click', function(event){
+    event.preventDefault();
     
-    let parentElementDelete = itemSupprimer[i].closest("article");
+    let parentElementDelete = produitSupprimer[i].closest("article");
     let productId = parentElementDelete.dataset.id;
     let productColor = parentElementDelete.dataset.color;
 
     let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-   for (let item =0; item<=kanapPanier.length-1; item++){
+    for (let item =0; item<=kanapPanier.length-1; item++){
 
         if(kanapPanier[item].id === productId && kanapPanier[item].colors === productColor){
 
@@ -156,87 +156,59 @@ itemSupprimer[i].onclick= function(){
            kanapPanier.splice(kanapPanier[obj],1);
            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
 
-        }
+        };
 
-    }
-            
+    };       
 
-        
-};
+});
 }
+}
+supprimerListenerProduit();
+
+
+
 
 /* fonction pour validation des données du formulaire et envoi des données et tableau des produits*/
 
-let contText= /[a-zA-Z]/g;
 
-let contAlphaNumerique= /[a-zA-Z0-9]/g;
+/*let contAlphaNumerique= /[a-zA-Z0-9]/g;
+let contEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;*/
 
-let contEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;
-
-let firstNameError = document.querySelector("#firstNameErrorMsg");
-let lastNameError = document.querySelector("#lastNameErrorMsg");
-let addressError = document.querySelector("#addressErrorMsg");
-let cityError = document.querySelector("#cityErrorMsg");
-let emailError = document.querySelector("#emailErrorMsg");
-
-
-let firstName = document.getElementById("firstName").value;
-let lastName = document.getElementById("lastName").value;
+/*let lastName = document.getElementById("lastName").value;
 let address = document.getElementById("address").value;
 let city = document.getElementById("city").value;
-let email = document.getElementById("email").value;
+let email = document.getElementById("email").value;*/
 
-if (firstName !== "" && contText.test(firstName) === false){
-    firstNameError.innerText = "Veuillez saisir uniquement des lettres.";
-   
+function check(){
+
+    let contText= /[a-zA-Z]/g;
+    let firstName = document.getElementById("firstName").value;
+    
+
+if(firstName !== "" && contText.test(firstName) === false){
+
+     document.querySelector("#firstNameErrorMsg").innerText="Veuillez saisir uniquement des lettres.";
+
 }else{
-
-    firstNameError.textContent="";
-    
+    document.querySelector("#firstNameErrorMsg").innerText="";
 }
-
-if (lastName !== "" &&contText.test(lastName) === false){
-    lastNameError.innerText = "Veuillez saisir uniquement des lettres.";
-    
-}else{
-    lastNameError.textContent="";
-   
 }
-
-if (address !== "" &&contAlphaNumerique.test(address) === false){
-    addressError.innerText = "Veuillez saisir uniquement des lettres.";
-    
-}else{
-    addressError.textContent="";
-    
-}
-
-if (city !== "" && contText.test(city) === false){
-    cityError.innerText = "Veuillez saisir uniquement des lettres.";
-    
-}else{
-    cityError.textContent="";
-    
-}
-
-if (email!== "" && contEmail.test(email) === false){
-    emailError.innerText = "Veuillez saisir une adresse email valide.";
-   
-}else{
-    emailError.textContent="";
-}
-
+check();
 
 
 function ajoutListenerCommande(){
 
-    const formulaireCommande = document.querySelector(".cart_order_form");
+    const formulaireCommande = document.querySelector("#order");
 
     formulaireCommande.addEventListener("submit", function(event){
 
-        event.preventDefault();
+    event.preventDefault();
 
-        let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
+   
+
+    let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
+
+    let panierCommande = kanapPanier.filter(produit => produit.id);
 
         const contact = {
             'firstName':event.target.querySelector("[name=firstName]").value,
@@ -244,7 +216,7 @@ function ajoutListenerCommande(){
             'address':event.target.querySelector("[name=address]").value,
             'city':event.target.querySelector("[name=city]").value,
             'email':event.target.querySelector("[name=email]").value,
-            'produitsPanier': kanapPanier
+            'produitsPanier': panierCommande
         }
 
         const chargeUtile = JSON.stringify(contact);
@@ -261,5 +233,75 @@ function ajoutListenerCommande(){
 
 
 }
+ajoutListenerCommande();
 
 
+
+/*
+
+let lastNameError = document.querySelector("#lastNameErrorMsg");
+let addressError = document.querySelector("#addressErrorMsg");
+let cityError = document.querySelector("#cityErrorMsg");
+let emailError = document.querySelector("#emailErrorMsg");
+
+
+
+
+
+
+if (firstName !== "" && contText.test(firstName) === false){
+
+    firstNameError.innerHTML = "Veuillez saisir uniquement des lettres.";
+    boutonCommandeInvalid.disabled = true;
+    
+}else{
+
+    firstNameError.textContent="";
+    boutonCommandeInvalid.disabled = false;
+}
+
+if (lastName !== "" &&contText.test(lastName) === false){
+
+    lastNameError.innerText = "Veuillez saisir uniquement des lettres.";
+    boutonCommandeInvalid.disabled = true;
+
+    
+}else{
+
+    lastNameError.textContent="";
+    boutonCommandeInvalid.disabled = false;
+}
+
+if (address !== "" &&contAlphaNumerique.test(address) === false){
+
+    addressError.innerText = "Veuillez saisir uniquement des chiffres et des lettres.";
+    boutonCommandeInvalid.disabled = true;
+    
+}else{
+
+    addressError.textContent="";
+    boutonCommandeInvalid.disabled = false;
+}
+
+if (city !== "" && contText.test(city) === false){
+
+    cityError.innerText = "Veuillez saisir uniquement des lettres.";
+    boutonCommandeInvalid.disabled = true;
+    
+}else{
+
+    cityError.textContent="";
+    boutonCommandeInvalid.disabled = false;
+}
+
+if (email!== "" && contEmail.test(email) === false){
+
+    emailError.innerText = "Veuillez saisir une adresse email valide.";
+    boutonCommandeInvalid.disabled = true;
+    
+}else{
+
+    emailError.textContent="";
+    boutonCommandeInvalid.disabled = false;
+}
+*/

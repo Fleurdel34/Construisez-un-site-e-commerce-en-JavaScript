@@ -171,44 +171,94 @@ supprimerListenerProduit();
 /* fonction pour validation des données du formulaire et envoi des données et tableau des produits*/
 
 
-/*let contAlphaNumerique= /[a-zA-Z0-9]/g;
-let contEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;*/
 
-/*let lastName = document.getElementById("lastName").value;
-let address = document.getElementById("address").value;
-let city = document.getElementById("city").value;
-let email = document.getElementById("email").value;*/
 
 function check(){
 
+    const inputCheck= document.querySelector(".cart__order__form");
+
+inputCheck.addEventListener('input', function(event){
+
+    event.preventDefault();
+
     let contText= /[a-zA-Z]/g;
+    let contAlphaNumerique= /[a-zA-Z0-9]/g;
+    let contEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;
+
     let firstName = document.getElementById("firstName").value;
+    let lastName = document.getElementById("lastName").value;
+    let address = document.getElementById("address").value;
+    let city = document.getElementById("city").value;
+    let email = document.getElementById("email").value;
+    
     
 
 if(firstName !== "" && contText.test(firstName) === false){
 
-     document.querySelector("#firstNameErrorMsg").innerText="Veuillez saisir uniquement des lettres.";
+    document.getElementById("firstNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
+    document.getElementById("order").disabled = true;
 
 }else{
-    document.querySelector("#firstNameErrorMsg").innerText="";
+    document.getElementById("firstNameErrorMsg").textContent="";
+    document.getElementById("order").disabled = false;
+
 }
+
+if(lastName !== "" && contText.test(lastName) === false){
+
+    document.getElementById("lastNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
+    document.getElementById("order").disabled = false;
+
+}else{
+    document.getElementById("lastNameErrorMsg").textContent="";
 }
+
+if(address !== "" && contAlphaNumerique.test(address) === false){
+
+    document.getElementById("addressErrorMsg").textContent="Veuillez saisir uniquement des chiffres et des lettres.";
+    document.getElementById("order").disabled = false;
+
+}else{
+    document.getElementById("addressErrorMsg").textContent="";
+}
+
+if(city !== "" && contText.test(city) === false){
+
+    document.getElementById("cityErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
+    document.getElementById("order").disabled = true;
+
+}else{
+    document.getElementById("cityErrorMsg").textContent="";
+    document.getElementById("order").disabled = false;
+
+}
+
+if(email !== "" && contEmail.test(email) === false){
+
+    document.getElementById("emailErrorMsg").textContent="Ceci n'est pas une adresse mail valide.";
+    document.getElementById("order").disabled = true;
+
+}else{
+    document.getElementById("emailErrorMsg").textContent="";
+    document.getElementById("order").disabled = false;
+}
+});
+}
+
 check();
 
 
 function ajoutListenerCommande(){
 
-    const formulaireCommande = document.querySelector("#order");
+    const formulaireCommande = document.getElementById("order");
 
     formulaireCommande.addEventListener("submit", function(event){
 
     event.preventDefault();
 
-   
+    kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
-
-    let panierCommande = kanapPanier.filter(produit => produit.id);
+    let tableauId = kanapPanier.map(produit => produit.id);
 
         const contact = {
             'firstName':event.target.querySelector("[name=firstName]").value,
@@ -216,7 +266,7 @@ function ajoutListenerCommande(){
             'address':event.target.querySelector("[name=address]").value,
             'city':event.target.querySelector("[name=city]").value,
             'email':event.target.querySelector("[name=email]").value,
-            'produitsPanier': panierCommande
+            'produitsPanier': tableauId
         }
 
         const chargeUtile = JSON.stringify(contact);
@@ -237,71 +287,4 @@ ajoutListenerCommande();
 
 
 
-/*
 
-let lastNameError = document.querySelector("#lastNameErrorMsg");
-let addressError = document.querySelector("#addressErrorMsg");
-let cityError = document.querySelector("#cityErrorMsg");
-let emailError = document.querySelector("#emailErrorMsg");
-
-
-
-
-
-
-if (firstName !== "" && contText.test(firstName) === false){
-
-    firstNameError.innerHTML = "Veuillez saisir uniquement des lettres.";
-    boutonCommandeInvalid.disabled = true;
-    
-}else{
-
-    firstNameError.textContent="";
-    boutonCommandeInvalid.disabled = false;
-}
-
-if (lastName !== "" &&contText.test(lastName) === false){
-
-    lastNameError.innerText = "Veuillez saisir uniquement des lettres.";
-    boutonCommandeInvalid.disabled = true;
-
-    
-}else{
-
-    lastNameError.textContent="";
-    boutonCommandeInvalid.disabled = false;
-}
-
-if (address !== "" &&contAlphaNumerique.test(address) === false){
-
-    addressError.innerText = "Veuillez saisir uniquement des chiffres et des lettres.";
-    boutonCommandeInvalid.disabled = true;
-    
-}else{
-
-    addressError.textContent="";
-    boutonCommandeInvalid.disabled = false;
-}
-
-if (city !== "" && contText.test(city) === false){
-
-    cityError.innerText = "Veuillez saisir uniquement des lettres.";
-    boutonCommandeInvalid.disabled = true;
-    
-}else{
-
-    cityError.textContent="";
-    boutonCommandeInvalid.disabled = false;
-}
-
-if (email!== "" && contEmail.test(email) === false){
-
-    emailError.innerText = "Veuillez saisir une adresse email valide.";
-    boutonCommandeInvalid.disabled = true;
-    
-}else{
-
-    emailError.textContent="";
-    boutonCommandeInvalid.disabled = false;
-}
-*/

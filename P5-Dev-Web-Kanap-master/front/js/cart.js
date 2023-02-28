@@ -258,24 +258,26 @@ function ajoutListenerCommande(){
 
     kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    let tableauId = kanapPanier.map(produit => produit.id);
+    let newTableauId = kanapPanier.map(produit => produit.id);
 
-        const contact = {
+        const objetContact = {
             'firstName':event.target.querySelector("[name=firstName]").value,
             'lastName':event.target.querySelector("[name=lastName]").value,
             'address':event.target.querySelector("[name=address]").value,
             'city':event.target.querySelector("[name=city]").value,
-            'email':event.target.querySelector("[name=email]").value,
-            'produitsPanier': tableauId
+            'email':event.target.querySelector("[name=email]").value            
         }
+        
 
-        const chargeUtile = JSON.stringify(contact);
+        const products =  JSON.stringify(newTableauId);
+
+        const contact = JSON.stringify(objetContact);
 
         fetch("http://localhost:3000/api/products/order"),{
 
             method:"POST",
             hearders:{"Content-Type":"application/json"},
-            body:chargeUtile
+            body:contact, products
         }
 
 

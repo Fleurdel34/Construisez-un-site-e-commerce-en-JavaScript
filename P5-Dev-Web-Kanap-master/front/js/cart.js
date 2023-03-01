@@ -168,81 +168,79 @@ supprimerListenerProduit();
 
 
 
-/* fonction pour validation des données du formulaire et envoi des données et tableau des produits*/
-
-
+/* fonction pour validation des données du formulaire et envoi des données et tableau des produits lors de la création de la requête POST*/
 
 
 function check(){
 
     const inputCheck= document.querySelector(".cart__order__form");
 
-inputCheck.addEventListener('input', function(event){
+    inputCheck.addEventListener('input', function(event){
 
-    event.preventDefault();
+        event.preventDefault();
 
-    let contText= /[a-zA-Z]/g;
-    let contAlphaNumerique= /[a-zA-Z0-9]/g;
-    let contEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;
+        let contText= /[a-zA-Z]/g;
+        let contAlphaNumerique= /[a-zA-Z0-9]/g;
+        let contEmail = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,3}$/;
 
-    let firstName = document.getElementById("firstName").value;
-    let lastName = document.getElementById("lastName").value;
-    let address = document.getElementById("address").value;
-    let city = document.getElementById("city").value;
-    let email = document.getElementById("email").value;
-    
-    
+        let firstName = document.getElementById("firstName").value;
+        let lastName = document.getElementById("lastName").value;
+        let address = document.getElementById("address").value;
+        let city = document.getElementById("city").value;
+        let email = document.getElementById("email").value;
+        
+        
 
-if(firstName !== "" && contText.test(firstName) === false){
+    if(firstName !== "" && contText.test(firstName) === false){
 
-    document.getElementById("firstNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
-    document.getElementById("order").disabled = true;
+        document.getElementById("firstNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
+        document.getElementById("order").disabled = true;
 
-}else{
-    document.getElementById("firstNameErrorMsg").textContent="";
-    document.getElementById("order").disabled = false;
+    }else{
+        document.getElementById("firstNameErrorMsg").textContent="";
+        document.getElementById("order").disabled = false;
 
-}
+    }
 
-if(lastName !== "" && contText.test(lastName) === false){
+    if(lastName !== "" && contText.test(lastName) === false){
 
-    document.getElementById("lastNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
-    document.getElementById("order").disabled = false;
+        document.getElementById("lastNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
+        document.getElementById("order").disabled = false;
 
-}else{
-    document.getElementById("lastNameErrorMsg").textContent="";
-}
+    }else{
+        document.getElementById("lastNameErrorMsg").textContent="";
+    }
 
-if(address !== "" && contAlphaNumerique.test(address) === false){
+    if(address !== "" && contAlphaNumerique.test(address) === false){
 
-    document.getElementById("addressErrorMsg").textContent="Veuillez saisir uniquement des chiffres et des lettres.";
-    document.getElementById("order").disabled = false;
+        document.getElementById("addressErrorMsg").textContent="Veuillez saisir uniquement des chiffres et des lettres.";
+        document.getElementById("order").disabled = false;
 
-}else{
-    document.getElementById("addressErrorMsg").textContent="";
-}
+    }else{
+        document.getElementById("addressErrorMsg").textContent="";
+    }
 
-if(city !== "" && contText.test(city) === false){
+    if(city !== "" && contText.test(city) === false){
 
-    document.getElementById("cityErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
-    document.getElementById("order").disabled = true;
+        document.getElementById("cityErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
+        document.getElementById("order").disabled = true;
 
-}else{
-    document.getElementById("cityErrorMsg").textContent="";
-    document.getElementById("order").disabled = false;
+    }else{
+        document.getElementById("cityErrorMsg").textContent="";
+        document.getElementById("order").disabled = false;
 
-}
+    }
 
-if(email !== "" && contEmail.test(email) === false){
+    if(email !== "" && contEmail.test(email) === false){
 
-    document.getElementById("emailErrorMsg").textContent="Ceci n'est pas une adresse mail valide.";
-    document.getElementById("order").disabled = true;
+        document.getElementById("emailErrorMsg").textContent="Ceci n'est pas une adresse mail valide.";
+        document.getElementById("order").disabled = true;
 
-}else{
-    document.getElementById("emailErrorMsg").textContent="";
-    document.getElementById("order").disabled = false;
-}
-});
+    }else{
+        document.getElementById("emailErrorMsg").textContent="";
+        document.getElementById("order").disabled = false;
+    }
+    });
 }
 
 check();
@@ -254,9 +252,9 @@ function ajoutListenerCommande(){
  
     formulaireCommande.addEventListener("click", function(event){
 
-    event.preventDefault();
+        event.preventDefault();
 
-    kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
+        kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
         let products = kanapPanier.map(produit => produit.id);
 
@@ -268,24 +266,33 @@ function ajoutListenerCommande(){
             email: document.getElementById("email").value            
         }
 
-        contact= JSON.stringify(contact);
-        products= JSON.stringify(products);
+        async function reqOrderId(){
+        try{
 
-        let responsePost = fetch("http://localhost:3000/api/products/order",{
+            const reqResponse = await fetch("http://localhost:3000/api/products/order",{
 
-            method:"POST",
-            hearders:{
-                "accept":"application/json",
-                "Content-Type":"application/json"},
-            body: {contact, products}
-        });
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({contact, products})
+            });
 
-        let result =  responsePost.JSON();
-        const buttonElement = document.querySelector("#order");
-        buttonElement.setAttribute("href", "confirmation.html?identifiant=" + result.orderId);
-        
-    })
-     
+            if(!reqResponse.ok){
+
+                throw new Error("Erreur de status: ${reqResponse.status}");
+            }
+
+            const resultReqPost = await reqResponse.json();
+            window.location.href = "confirmation.html?identifiant=" + resultReqPost.orderId; 
+
+        }
+        catch(error)
+        {
+            console.error(error);
+        };
+        }
+        reqOrderId();
+    });
+
 }
 ajoutListenerCommande();
 

@@ -251,42 +251,43 @@ check();
 function ajoutListenerCommande(){
 
     const formulaireCommande = document.getElementById("order");
-
-    formulaireCommande.addEventListener("submit", function(event){
+ 
+    formulaireCommande.addEventListener("click", function(event){
 
     event.preventDefault();
 
     kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    let newTableauId = kanapPanier.map(produit => produit.id);
+        let products = kanapPanier.map(produit => produit.id);
 
-        const objetContact = {
-            'firstName':event.target.querySelector("[name=firstName]").value,
-            'lastName':event.target.querySelector("[name=lastName]").value,
-            'address':event.target.querySelector("[name=address]").value,
-            'city':event.target.querySelector("[name=city]").value,
-            'email':event.target.querySelector("[name=email]").value            
+        let contact = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            address: document.getElementById("address").value,
+            city: document.getElementById("city").value,
+            email: document.getElementById("email").value            
         }
-        
 
-        const products =  JSON.stringify(newTableauId);
+        contact= JSON.stringify(contact);
+        products= JSON.stringify(products);
 
-        const contact = JSON.stringify(objetContact);
-
-        fetch("http://localhost:3000/api/products/order"),{
+        let responsePost = fetch("http://localhost:3000/api/products/order",{
 
             method:"POST",
-            hearders:{"Content-Type":"application/json"},
-            body:contact, products
-        }
+            hearders:{
+                "accept":"application/json",
+                "Content-Type":"application/json"},
+            body: {contact, products}
+        });
 
-
+        let result =  responsePost.JSON();
+        const buttonElement = document.querySelector("#order");
+        buttonElement.setAttribute("href", "confirmation.html?identifiant=" + result.orderId);
+        
     })
-
-
+     
 }
 ajoutListenerCommande();
-
 
 
 

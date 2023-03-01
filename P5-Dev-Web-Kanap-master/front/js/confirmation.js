@@ -1,17 +1,15 @@
-POST / "http://localhost:3000/api/products/order/"/HTTP/1.1
-Host: foo.com"Content-Type":"application/json"
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 13
+const urlParams= (new URL(window.location)).searchParams;
+let identifiant;
 
-function afficherIdentifiant(responsePost){
+if (urlParams.has('identifiant')){
+identifiant = urlParams.get('identifiant');
+};
 
-    for (let i = 0; i<responsePost.length; i++){
-    
-        const identiant = responsePost[i];
-        const divElement = document.querySelector(".confirmation");
-        const spanElement = document.createElement("span")
-        spanElement.innerText = identiant.orderId;
-        spanElement.setAttribute("id", "orderId");
-        divElement.appendChild(spanElement);
-    }
-}  
+
+const divElement = document.querySelector("confirmation");
+const spanElement = document.createElement("span");
+spanElement.setAttribute("id", "orderId");
+spanElement.innerText= identifiant;
+divElement.appendChild(spanElement);
+
+ 

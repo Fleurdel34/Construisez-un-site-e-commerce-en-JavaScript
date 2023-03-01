@@ -137,28 +137,17 @@ produitSupprimer[i].addEventListener('click', function(event){
 
     let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    for (let item =0; item<=kanapPanier.length-1; item++){
+    for (let item = kanapPanier.length -1 ; item >= 0; item--){
 
         if(kanapPanier[item].id === productId && kanapPanier[item].colors === productColor){
-
-            parentElementDelete.remove();
+            
+            kanapPanier = kanapPanier.splice(kanapPanier[item],1);
+            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
+            
             
         };
-    };
-
-    kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
-
-    for(let obj = 0; obj<=kanapPanier.length-1;obj++){
-
-
-        if(kanapPanier[obj].id === productId && kanapPanier[obj].colors === productColor){
-
-           kanapPanier.splice(kanapPanier[obj],1);
-           window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
-
-        };
-
-    };       
+    };  
+    parentElementDelete.remove();  
 
 });
 }
@@ -168,7 +157,7 @@ supprimerListenerProduit();
 
 
 
-/* fonction pour validation des données du formulaire et envoi des données et tableau des produits lors de la création de la requête POST*/
+/* fonction pour validation des données du formulaire et envoi des données et du tableau des produits lors de la création de la requête POST*/
 
 
 function check(){

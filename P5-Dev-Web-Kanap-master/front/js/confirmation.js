@@ -1,3 +1,5 @@
+/*affichage de l'identifiant de commande*/
+
 const urlParams= (new URL(window.location)).searchParams;
 
 let identifiant;

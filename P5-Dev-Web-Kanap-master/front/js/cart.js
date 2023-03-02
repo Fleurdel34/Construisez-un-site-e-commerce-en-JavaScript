@@ -102,22 +102,23 @@ input[i].addEventListener('change', function(event){
     event.preventDefault();
 
     let resultModif = this.value;
-    let quantiteElement = document.querySelector("div.cart__item__content__settings__quantity > p");
-    quantiteElement.innerText = "Qté: " + resultModif;
-    let parentElementQuantiteModif = quantiteElement.closest("article");
+    document.querySelector(".cart__item__content__setting__Quantity > p").innerText = "Qté : " + input[i].value;
+    let parentElementQuantiteModif = input[i].closest("article");
     let productIdModif = parentElementQuantiteModif.dataset.id;
     let productColorModif = parentElementQuantiteModif.dataset.color;
 
     let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    for(let obj = 0; obj<=kanapPanier.length-1; obj++){
-        if(kanapPanier[obj].id === productIdModif && kanapPanier[obj].colors === productColorModif)
-        {
-            kanapPanier[obj].quantite = resultModif;
-            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
-        }
+    const newItemQuantite = kanapPanier.map((item)=>{
 
-    }
+        if(item.id === productIdModif &&item.colors === productColorModif)
+        {
+            return{...item, quantite:resultModif}
+            
+        }
+        return item;
+    })
+    window.localStorage.setItem('kanapPanier', JSON.stringify(newItemQuantite));  
 
 });
 

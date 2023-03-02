@@ -102,7 +102,7 @@ input[i].addEventListener('change', function(event){
     event.preventDefault();
 
     let resultModif = this.value;
-    document.querySelector(".cart__item__content__setting__Quantity > p").innerText = "Qté : " + input[i].value;
+    document.querySelector(".cart__item__content__setting__Quantity > p").innerText = "Qté : " + resultModif;
     let parentElementQuantiteModif = input[i].closest("article");
     let productIdModif = parentElementQuantiteModif.dataset.id;
     let productColorModif = parentElementQuantiteModif.dataset.color;

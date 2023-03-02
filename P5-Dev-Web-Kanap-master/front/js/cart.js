@@ -92,13 +92,17 @@ div4Element.appendChild(deleteElement);
 
 
 function modifListenerQuantite(){
-const input = document.querySelector(".itemQuantity");
 
-input.addEventListener('change', function(event){
+const input = document.querySelectorAll(".itemQuantity");
+
+for(let i = 0; i<=input.length-1; i++){
+
+input[i].addEventListener('change', function(event){
+
     event.preventDefault();
 
     let resultModif = this.value;
-    let quantiteElement = document.querySelector("div.cart__item__content__setting__Quantity > p");
+    let quantiteElement = document.querySelector("div.cart__item__content__settings__quantity > p");
     quantiteElement.innerText = "Qté: " + resultModif;
     let parentElementQuantiteModif = quantiteElement.closest("article");
     let productIdModif = parentElementQuantiteModif.dataset.id;
@@ -116,6 +120,9 @@ input.addEventListener('change', function(event){
     }
 
 });
+
+};
+
 }
 
 modifListenerQuantite();
@@ -137,11 +144,11 @@ produitSupprimer[i].addEventListener('click', function(event){
 
     let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    for (let item = kanapPanier.length -1 ; item >= 0; item--){
+    for (let item = kanapPanier.length-1 ; item >= 0; item--){
 
         if(kanapPanier[item].id === productId && kanapPanier[item].colors === productColor){
             
-            kanapPanier = kanapPanier.splice(kanapPanier[item],1);
+            kanapPanier.splice(item,1);
             window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
             
             

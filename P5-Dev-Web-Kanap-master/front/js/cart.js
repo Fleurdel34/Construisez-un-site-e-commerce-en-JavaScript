@@ -4,86 +4,78 @@ let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
 
 for (let i =0; i<= kanapPanier.length-1; i++) {   
-
    
     let id = kanapPanier[i].id;
     let quantite  = kanapPanier[i].quantite;
     let colors  = kanapPanier[i].colors;
 	       
-const requeteApi = await fetch("http://localhost:3000/api/products/"+id); 
-const response = await requeteApi.json(); 
+    const requeteApi = await fetch("http://localhost:3000/api/products/"+id); 
+    const response = await requeteApi.json(); 
 
+    const sectionElement = document.querySelector("#cart__items");
 
+    const articleElement = document.createElement("article");
+    articleElement.setAttribute("class", "cart__item");
+    articleElement.setAttribute("data-id", id);
+    articleElement.setAttribute("data-color", colors);
 
-const sectionElement = document.querySelector("#cart__items");
+    const div1Element = document.createElement("div");
+    div1Element.setAttribute("class", "cart__item__img");
+    const imgElement = document.createElement("img"); 
+    imgElement.src = response.imageUrl;
+    imgElement.setAttribute("alt", "produits.altTxt");
 
-const articleElement = document.createElement("article");
-articleElement.setAttribute("class", "cart__item");
-articleElement.setAttribute("data-id", id);
-articleElement.setAttribute("data-color", colors);
+    const div2Element = document.createElement("div");
+    div2Element.setAttribute("class", "cart__item__content");
+    const sousDiv2Element = document.createElement("div");
+    sousDiv2Element.setAttribute("class", "cart__item__content__description");
+    const nameElement = document.createElement("h2");
+    nameElement.innerText = response.name;
+    const colorElement = document.createElement("p");
+    colorElement.innerText = colors;
+    const prixElement = document.createElement("p");
+    prixElement.innerText = response.price + " €";
 
-const div1Element = document.createElement("div");
-div1Element.setAttribute("class", "cart__item__img");
-const imgElement = document.createElement("img"); 
-imgElement.src = response.imageUrl;
-imgElement.setAttribute("alt", "produits.altTxt");
+    const div3Element = document.createElement("div");
+    div3Element.setAttribute("class", "cart__item__content__settings");
+    const sousDiv3Element = document.createElement("div");
+    sousDiv3Element.setAttribute("class", "cart__item__content__setting__Quantity");
+    const quantiteElement = document.createElement("p");
+    quantiteElement.innerText = "Qté: " + quantite;
+    const itemElement = document.createElement("input");
+    itemElement.setAttribute("type","number");
+    itemElement.setAttribute("class","itemQuantity");
+    itemElement.setAttribute("name","itemQuantity");
+    itemElement.setAttribute("min","1");
+    itemElement.setAttribute("max","100");
+   
+    const div4Element = document.createElement("div");
+    div4Element.setAttribute("class","cart__item__content__settings__delete");
+    const deleteElement = document.createElement("p");
+    deleteElement.innerText = "Supprimer";
+    div4Element.setAttribute("class", "deleteItem");
 
-const div2Element = document.createElement("div");
-div2Element.setAttribute("class", "cart__item__content");
-const sousDiv2Element = document.createElement("div");
-sousDiv2Element.setAttribute("class", "cart__item__content__description");
-const nameElement = document.createElement("h2");
-nameElement.innerText = response.name;
-const colorElement = document.createElement("p");
-colorElement.innerText = colors;
-const prixElement = document.createElement("p");
-prixElement.innerText = response.price + " €";
+    sectionElement.appendChild(articleElement);
 
+    articleElement.appendChild(div1Element);
+    articleElement.appendChild(div2Element);
+    articleElement.appendChild(div3Element);
+    articleElement.appendChild(div4Element);
 
-const div3Element = document.createElement("div");
-div3Element.setAttribute("class", "cart__item__content__settings")
-const sousDiv3Element = document.createElement("div");
-sousDiv3Element.setAttribute("class", "cart__item__content__setting__Quantity");
-const quantiteElement = document.createElement("p");
-quantiteElement.innerText = "Qté: " + quantite;
-const itemElement = document.createElement("input");
-itemElement.setAttribute("type","number");
-itemElement.setAttribute("class","itemQuantity");
-itemElement.setAttribute("name","itemQuantity");
-itemElement.setAttribute("min","1");
-itemElement.setAttribute("max","100");
+    div1Element.appendChild(imgElement);  
 
+    div2Element.appendChild(sousDiv2Element);
+    sousDiv2Element.appendChild(nameElement);
+    sousDiv2Element.appendChild(colorElement);
+    sousDiv2Element.appendChild(prixElement);
 
-        
-const div4Element = document.createElement("div");
-div4Element.setAttribute("class","cart__item__content__settings__delete");
-const deleteElement = document.createElement("p");
-deleteElement.innerText = "Supprimer";
-div4Element.setAttribute("class", "deleteItem");
+    div3Element.appendChild(sousDiv3Element);
+    sousDiv3Element.appendChild(quantiteElement);
+    sousDiv3Element.appendChild(itemElement);
 
+    div4Element.appendChild(deleteElement);
 
-
-sectionElement.appendChild(articleElement);
-
-articleElement.appendChild(div1Element);
-articleElement.appendChild(div2Element);
-articleElement.appendChild(div3Element);
-articleElement.appendChild(div4Element);
-
-div1Element.appendChild(imgElement);  
-
-div2Element.appendChild(sousDiv2Element);
-sousDiv2Element.appendChild(nameElement);
-sousDiv2Element.appendChild(colorElement);
-sousDiv2Element.appendChild(prixElement);
-
-div3Element.appendChild(sousDiv3Element);
-sousDiv3Element.appendChild(quantiteElement);
-sousDiv3Element.appendChild(itemElement);
-
-div4Element.appendChild(deleteElement);
-
-}
+};
 
 
 /* Modification de la quantité ou supression d'un produit du panier et maj du DOM/localStorage*/
@@ -93,39 +85,40 @@ div4Element.appendChild(deleteElement);
 
 function modifListenerQuantite(){
 
-const input = document.querySelectorAll(".itemQuantity");
+    const input = document.querySelectorAll(".itemQuantity");
 
-for(let i = 0; i<=input.length-1; i++){
+    for(let i = 0; i<=input.length-1; i++){
 
-input[i].addEventListener('change', function(event){
+        input[i].addEventListener('change', function(event){
 
-    event.preventDefault();
+            event.preventDefault();
 
-    let resultModif = this.value;
-    let parentElementDiv = input[i].closest("div");
-    parentElementDiv.querySelector('p').textContent = 'Qté: ' + resultModif;
-    let parentElementQuantiteModif = input[i].closest("article");
-    let productIdModif = parentElementQuantiteModif.dataset.id;
-    let productColorModif = parentElementQuantiteModif.dataset.color;
+            let resultModif = this.value;
+            let parentElementDiv = input[i].closest("div");
+            parentElementDiv.querySelector('p').textContent = 'Qté: ' + resultModif;
+            let parentElementQuantiteModif = input[i].closest("article");
+            let productIdModif = parentElementQuantiteModif.dataset.id;
+            let productColorModif = parentElementQuantiteModif.dataset.color;
 
-    let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
+            let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
 
-    const newItemQuantite = kanapPanier.map((item)=>{
+            const newItemQuantite = kanapPanier.map((item)=>{
 
-        if(item.id === productIdModif &&item.colors === productColorModif)
-        {
-            return{...item, quantite:resultModif}
-            
-        }
-        return item;
-    })
-    window.localStorage.setItem('kanapPanier', JSON.stringify(newItemQuantite));  
+                if(item.id === productIdModif &&item.colors === productColorModif)
+                {
 
-});
+                    return{...item, quantite:resultModif};
+                    
+                };
+                return item;
+            });
+            window.localStorage.setItem('kanapPanier', JSON.stringify(newItemQuantite));  
+
+        });
+
+    };
 
 };
-
-}
 
 modifListenerQuantite();
 
@@ -133,34 +126,33 @@ modifListenerQuantite();
 
 function supprimerListenerProduit(){
 
-const produitSupprimer = document.querySelectorAll(".deleteItem");
+    const produitSupprimer = document.querySelectorAll(".deleteItem");
 
-for(let i = 0; i<=produitSupprimer.length-1; i++){
+    for(let i = 0; i<=produitSupprimer.length-1; i++){
 
-produitSupprimer[i].addEventListener('click', function(event){
-    event.preventDefault();
-    
-    let parentElementDelete = produitSupprimer[i].closest("article");
-    let productId = parentElementDelete.dataset.id;
-    let productColor = parentElementDelete.dataset.color;
-
-    let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
-
-    for (let item = kanapPanier.length-1 ; item >= 0; item--){
-
-        if(kanapPanier[item].id === productId && kanapPanier[item].colors === productColor){
+        produitSupprimer[i].addEventListener('click', function(event){
+            event.preventDefault();
             
-            kanapPanier.splice(item,1);
-            window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
-            
-            
-        };
-    };  
-    parentElementDelete.remove();  
+            let parentElementDelete = produitSupprimer[i].closest("article");
+            let productId = parentElementDelete.dataset.id;
+            let productColor = parentElementDelete.dataset.color;
 
-});
-}
-}
+            let kanapPanier = JSON.parse(window.localStorage.getItem('kanapPanier'));
+
+            for (let item = kanapPanier.length-1 ; item >= 0; item--){
+
+                if(kanapPanier[item].id === productId && kanapPanier[item].colors === productColor){
+                    
+                    kanapPanier.splice(item,1);
+                    window.localStorage.setItem('kanapPanier', JSON.stringify(kanapPanier));
+                     
+                };
+            };  
+            parentElementDelete.remove();  
+
+        });
+    };
+};
 supprimerListenerProduit();
 
 
@@ -186,60 +178,65 @@ function check(){
         let address = document.getElementById("address").value;
         let city = document.getElementById("city").value;
         let email = document.getElementById("email").value;
-        
-        
 
-    if(firstName !== "" && contText.test(firstName) === false){
+        if(firstName !== "" && contText.test(firstName) === false){
 
-        document.getElementById("firstNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
-        document.getElementById("order").disabled = true;
+            document.getElementById("firstNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
+            document.getElementById("order").disabled = true;
 
-    }else{
-        document.getElementById("firstNameErrorMsg").textContent="";
-        document.getElementById("order").disabled = false;
+        }else{
 
-    }
+            document.getElementById("firstNameErrorMsg").textContent="";
+            document.getElementById("order").disabled = false;
 
-    if(lastName !== "" && contText.test(lastName) === false){
+        };
 
-        document.getElementById("lastNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
-        document.getElementById("order").disabled = false;
+        if(lastName !== "" && contText.test(lastName) === false){
 
-    }else{
-        document.getElementById("lastNameErrorMsg").textContent="";
-    }
+            document.getElementById("lastNameErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
+            document.getElementById("order").disabled = false;
 
-    if(address !== "" && contAlphaNumerique.test(address) === false){
+        }else{
 
-        document.getElementById("addressErrorMsg").textContent="Veuillez saisir uniquement des chiffres et des lettres.";
-        document.getElementById("order").disabled = false;
+            document.getElementById("lastNameErrorMsg").textContent="";
+        };
 
-    }else{
-        document.getElementById("addressErrorMsg").textContent="";
-    }
+        if(address !== "" && contAlphaNumerique.test(address) === false){
 
-    if(city !== "" && contText.test(city) === false){
+            document.getElementById("addressErrorMsg").textContent="Veuillez saisir uniquement des chiffres et des lettres.";
+            document.getElementById("order").disabled = false;
 
-        document.getElementById("cityErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
-        document.getElementById("order").disabled = true;
+        }else{
 
-    }else{
-        document.getElementById("cityErrorMsg").textContent="";
-        document.getElementById("order").disabled = false;
+            document.getElementById("addressErrorMsg").textContent="";
 
-    }
+        };
 
-    if(email !== "" && contEmail.test(email) === false){
+        if(city !== "" && contText.test(city) === false){
 
-        document.getElementById("emailErrorMsg").textContent="Ceci n'est pas une adresse mail valide.";
-        document.getElementById("order").disabled = true;
+            document.getElementById("cityErrorMsg").textContent="Veuillez saisir uniquement des lettres.";
+            document.getElementById("order").disabled = true;
 
-    }else{
-        document.getElementById("emailErrorMsg").textContent="";
-        document.getElementById("order").disabled = false;
-    }
+        }else{
+
+            document.getElementById("cityErrorMsg").textContent="";
+            document.getElementById("order").disabled = false;
+
+        };
+
+        if(email !== "" && contEmail.test(email) === false){
+
+            document.getElementById("emailErrorMsg").textContent="Ceci n'est pas une adresse mail valide.";
+            document.getElementById("order").disabled = true;
+
+        }else{
+
+            document.getElementById("emailErrorMsg").textContent="";
+            document.getElementById("order").disabled = false;
+
+        };
     });
-}
+};
 
 check();
 
@@ -265,33 +262,35 @@ function ajoutListenerCommande(){
         }
 
         async function reqOrderId(){
-        try{
+            try{
 
-            const reqResponse = await fetch("http://localhost:3000/api/products/order",{
+                const reqResponse = await fetch("http://localhost:3000/api/products/order",{
 
-                method:"POST",
-                headers:{"Content-Type":"application/json"},
-                body:JSON.stringify({contact, products})
-            });
+                    method:"POST",
+                    headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify({contact, products})
 
-            if(!reqResponse.ok){
+                });
 
-                throw new Error("Erreur de status: ${reqResponse.status}");
+                if(!reqResponse.ok){
+
+                    throw new Error("Erreur de status: ${reqResponse.status}");
+                };
+
+                const resultReqPost = await reqResponse.json();
+                window.location.href = "confirmation.html?identifiant=" + resultReqPost.orderId; 
+
             }
+            catch(error){
 
-            const resultReqPost = await reqResponse.json();
-            window.location.href = "confirmation.html?identifiant=" + resultReqPost.orderId; 
+                console.error(error);
 
-        }
-        catch(error)
-        {
-            console.error(error);
-        };
+            };
         }
         reqOrderId();
     });
 
-}
+};
 ajoutListenerCommande();
 
 

@@ -1,4 +1,3 @@
-
 const response = await fetch("http://localhost:3000/api/products");
 const produit =  await response.json();
 
@@ -6,7 +5,7 @@ const produit =  await response.json();
 
 function afficherProduits(produit){
 
-for (let i = 0; i<produit.length; i++){
+  for (let i = 0; i<produit.length; i++){
 
     const produits = produit[i];
 
@@ -35,7 +34,7 @@ for (let i = 0; i<produit.length; i++){
 
   };
 
-}
+};
 
 afficherProduits(produit);
 
